@@ -25,6 +25,8 @@ Yarışmanın değerlendirme metriği **Balanced Accuracy**’dir. Bu metrik her
 
 | Ölçüm | Sonuç |
 |---|---:|
+| OOF Balanced Accuracy | **0.950614** |
+| Public leaderboard skoru | **0.95065** |
 | Private leaderboard skoru | **0.95043** |
 | Final sıralaması | **173** |
 | Birincilik skoru | 0.95085 |
@@ -70,14 +72,16 @@ Bu nedenle normal accuracy yanıltıcı olabilirdi. Proje boyunca `StratifiedKFo
 4. Train ve test dağılımlarını karşılaştırma
 5. Sayısal ve kategorik değişkenlerin hedefle ilişkisini inceleme
 6. Az sayıda, yorumlanabilir etkileşim değişkeni üretme
-7. `StratifiedKFold` ile CatBoost ve OOF tahminleri oluşturma
-8. `SqrtBalanced` sınıf ağırlıklarıyla dengesizliği ele alma
-9. Sınıf olasılık çarpanlarını OOF Balanced Accuracy üzerinde ayarlama
-10. Tahmin dağılımını doğrulayıp submission dosyasını üretme
+7. Feature-engineered CatBoost ve native kategorik LightGBM ile base ensemble oluşturma
+8. Target encoding işlemini fold içinde uygulayarak hedef sızıntısını önleme
+9. Üç seed ve 7-fold Target-Encoding LightGBM ile tahmin varyansını azaltma
+10. Sınıf prior düzeltmesini OOF Balanced Accuracy üzerinde seçme
+11. Düzeltilmiş TE modele %85, base ensemble’a %15 ağırlık verme
+12. OOF raporunu, sınıf recall değerlerini ve submission yapısını doğrulama
 
 ### Feature engineering
 
-Temiz notebook’ta aşağıdaki yorumlanabilir etkileşimler kullanıldı:
+Final notebook’ta aşağıdaki yorumlanabilir etkileşimler kullanıldı:
 
 - Uyku süresi × BMI
 - Uyku süresi × adım sayısı
@@ -91,7 +95,11 @@ Temiz notebook’ta aşağıdaki yorumlanabilir etkileşimler kullanıldı:
 
 Her yeni feature otomatik olarak faydalı kabul edilmedi; ölçülebilir bir hipotez olarak ele alınıp cross-validation ile sınandı.
 
-### Temiz notebook dışındaki deneyler
+### Final model ve diğer deneyler
+
+Final submission; feature-engineered CatBoost, LightGBM ve üç seed ile eğitilmiş
+7-fold Target-Encoding LightGBM olasılıklarının prior correction sonrasında
+birleştirilmesiyle üretildi.
 
 Yarışma sürecindeki geniş model laboratuvarında ayrıca şunlar denendi:
 
@@ -116,7 +124,7 @@ student-health-risk-kaggle/
 |-- docs/
 |   `-- competition-retrospective-tr.md
 |-- notebooks/
-|   `-- student_health_risk_clean_solution.ipynb
+|   `-- final_competition_solution.ipynb
 |-- .gitignore
 |-- README.md
 `-- requirements.txt
@@ -186,6 +194,8 @@ The competition metric is **Balanced Accuracy**, which gives equal importance to
 
 | Metric | Result |
 |---|---:|
+| OOF Balanced Accuracy | **0.950614** |
+| Public leaderboard score | **0.95065** |
 | Private leaderboard score | **0.95043** |
 | Final rank | **173** |
 | Winning score | 0.95085 |
@@ -231,14 +241,16 @@ For this reason, ordinary accuracy would be misleading. The project uses `Strati
 4. Compare train and test distributions.
 5. Explore numerical and categorical relationships with the target.
 6. Create a small set of interpretable interaction features.
-7. Train CatBoost with `StratifiedKFold` and generate OOF predictions.
-8. Address class imbalance with `SqrtBalanced` class weights.
-9. Tune class probability multipliers against OOF Balanced Accuracy.
-10. Validate the prediction distribution and create the submission file.
+7. Build a base ensemble with feature-engineered CatBoost and native-categorical LightGBM.
+8. Apply target encoding inside each fold to prevent target leakage.
+9. Reduce prediction variance with three seeds of 7-fold Target-Encoding LightGBM.
+10. Select class-prior correction using OOF Balanced Accuracy.
+11. Blend 85% corrected TE model probabilities with 15% base ensemble probabilities.
+12. Validate OOF reports, class recall, and the final submission structure.
 
 ### Feature engineering
 
-The clean notebook uses the following interpretable interactions:
+The final notebook uses the following interpretable interactions:
 
 - Sleep duration × BMI
 - Sleep duration × step count
@@ -252,7 +264,10 @@ The clean notebook uses the following interpretable interactions:
 
 Each feature was treated as a testable hypothesis rather than assumed to be useful automatically.
 
-### Additional experiments
+### Final model and additional experiments
+
+The final submission combines a feature-engineered CatBoost model, LightGBM, and
+three seeds of 7-fold Target-Encoding LightGBM after probability prior correction.
 
 The broader competition study also included CatBoost, LightGBM, XGBoost, target encoding, multi-seed averaging, prior correction, class-specific multipliers, blending, stacking, RealMLP, missing indicators, cascade models, and disagreement arbiters.
 
@@ -267,7 +282,7 @@ student-health-risk-kaggle/
 |-- docs/
 |   `-- competition-retrospective-tr.md
 |-- notebooks/
-|   `-- student_health_risk_clean_solution.ipynb
+|   `-- final_competition_solution.ipynb
 |-- .gitignore
 |-- README.md
 `-- requirements.txt
