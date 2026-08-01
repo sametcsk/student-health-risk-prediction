@@ -30,6 +30,17 @@ Yarışmanın değerlendirme metriği **Balanced Accuracy**’dir. Bu metrik her
 | Birincilik skoru | 0.95085 |
 | Birincilik skoruyla fark | 0.00042 |
 
+Yarışmanın ölçeği:
+
+| Katılım göstergesi | Sayı |
+|---|---:|
+| Yarışmaya katılanlar (entrants) | 6.691 |
+| Aktif katılımcılar | 3.452 |
+| Takımlar | 3.355 |
+| Toplam submission | 34.190 |
+
+Bu sonuç, takım sayısına göre yaklaşık **ilk %5,2** içinde yer almaktadır.
+
 Final leaderboard oldukça sıkışıktı. Bu nedenle çalışmada yalnızca model skoru değil; validation güvenilirliği, sınıf bazlı recall ve public/private leaderboard riski de dikkate alındı.
 
 ### Veri seti
@@ -179,6 +190,17 @@ The competition metric is **Balanced Accuracy**, which gives equal importance to
 | Final rank | **173** |
 | Winning score | 0.95085 |
 | Gap to winning score | 0.00042 |
+
+Competition scale:
+
+| Participation metric | Count |
+|---|---:|
+| Entrants | 6,691 |
+| Participants | 3,452 |
+| Teams | 3,355 |
+| Total submissions | 34,190 |
+
+Based on the number of teams, this result ranks approximately in the **top 5.2%**.
 
 The final leaderboard was extremely close. The project therefore focused on validation reliability, class-level recall, and public/private leaderboard risk in addition to model performance.
 
